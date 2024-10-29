@@ -30,8 +30,8 @@ class Board {
     }
 
     fun movePlayer(player: Player, position: Point) {
-        findPath(player.sovereign.on.point, position);
-        val path = listOf<Cell>(getCell(Point(0, 1)), getCell(Point(1, 1)))
+        val path = findPath(player.sovereign.on.point, position);
+//        val path = listOf<Cell>(getCell(Point(0, 1)), getCell(Point(1, 1)))
 
         player.sovereign.travel(path);
     }
@@ -74,10 +74,12 @@ class Board {
         val visited = mutableSetOf<Cell>();
         val parent = mutableMapOf<Cell, Cell>();
 
+        visited.add(start);
         queue.add(start);
 
         while (queue.isNotEmpty()) {
             val current = queue.poll();
+
             if (current == end) {
                 break;
             }
@@ -91,6 +93,10 @@ class Board {
                 parent[neighbor] = current;
                 queue.add(neighbor);
             }
+        }
+
+        if (end !in visited) {
+            return emptyList();
         }
 
         val path = mutableListOf<Cell>();

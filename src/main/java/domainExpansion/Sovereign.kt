@@ -14,6 +14,10 @@ class Sovereign(var on: Cell) {
     }
 
     fun travel(path: List<Cell>) {
+        if (path.isEmpty()) {
+            return
+        }
+
         val end = path.last()
         on.free()
         end.occupy(this)
