@@ -1,6 +1,6 @@
 import com.codingame.gameengine.runner.MultiplayerGameRunner;
 
-public class SkeletonMain {
+public class Main {
     public static void main(String[] args) {
 
         // Uncomment this section and comment the other one to create a Solo Game
