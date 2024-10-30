@@ -11,7 +11,7 @@ class Cell(val x: Int, val y: Int) {
     var canUp = true
     var canDown = true
 
-    fun isOccupied(): Boolean {
+    private fun isOccupied(): Boolean {
         return entity != null
     }
 
@@ -31,12 +31,12 @@ class Cell(val x: Int, val y: Int) {
         return abs(x - other.x) + abs(y - other.y)
     }
 
-    fun canGo(other: Cell): Boolean {
+    fun canGo(other: Cell, bodyBlock: Boolean = true): Boolean {
         if (distance(other) != 1) {
             return false
         }
 
-        if (other.isOccupied()) {
+        if (other.isOccupied() && bodyBlock) {
             return false
         }
 
@@ -58,6 +58,15 @@ class Cell(val x: Int, val y: Int) {
 
         System.err.println("Error: exception")
         return false
+    }
+
+    fun hasWall(direction: Action.Direction): Boolean {
+        return when (direction) {
+            Action.Direction.UP -> !canUp
+            Action.Direction.DOWN -> !canDown
+            Action.Direction.LEFT -> !canLeft
+            Action.Direction.RIGHT -> !canRight
+        }
     }
 
     fun equals(other: Cell): Boolean {

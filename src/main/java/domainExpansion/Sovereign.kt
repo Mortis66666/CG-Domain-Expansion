@@ -28,4 +28,8 @@ class Sovereign(var on: Cell) {
             view.move(cell.x, cell.y, (i + 1).toDouble() / path.size.toDouble() * 0.8)
         }
     }
+
+    override fun toString(): String {
+        return "$on"
+    }
 }

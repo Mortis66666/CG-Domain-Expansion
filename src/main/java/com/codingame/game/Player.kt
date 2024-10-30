@@ -30,7 +30,7 @@ class Player : AbstractMultiplayerPlayer() {
                 "D" -> Direction.DOWN
                 "L" -> Direction.LEFT
                 "R" -> Direction.RIGHT
-                else -> throw InvalidAction("Invalid direction.")
+                else -> Direction.UP
             }
 
             val msg = match.groups["message"]?.value

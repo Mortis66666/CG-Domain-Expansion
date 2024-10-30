@@ -1,0 +1,8 @@
+read width:int height:int
+gameloop
+read x:int y:int
+read opponentX:int opponentY:int
+read numWalls:int
+loop numWalls read ax:int ay:int bx:int by:int
+STATEMENT
+Expand your domain

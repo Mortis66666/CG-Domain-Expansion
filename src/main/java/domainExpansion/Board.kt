@@ -6,7 +6,7 @@ import java.util.*
 
 class Board {
     private lateinit var view: BoardView;
-    private val walls = mutableListOf<Wall>();
+    val walls = mutableListOf<Wall>();
     private val grid = Array(Constant.HEIGHT) { y -> Array(Constant.WIDTH) { x -> Cell(x, y)} }
 
     init {
@@ -24,15 +24,51 @@ class Board {
 
     fun doAction(player: Player, action: Action) {
         movePlayer(player, action.point);
+        val playerPosition = player.sovereign.on.point;
 
-        val cellB = when (action.direction) {
-            Action.Direction.UP -> Point(action.point.first, action.point.second - 1)
-            Action.Direction.DOWN -> Point(action.point.first, action.point.second + 1)
-            Action.Direction.LEFT -> Point(action.point.first - 1, action.point.second)
-            Action.Direction.RIGHT -> Point(action.point.first + 1, action.point.second)
+        var wallDirection = action.direction;
+
+        while (player.sovereign.on.hasWall(wallDirection)) {
+            wallDirection = wallDirection.next();
         }
 
-        addWall(player, action.point, cellB);
+        val cellB = when (wallDirection) {
+            Action.Direction.UP -> Point(playerPosition.first, playerPosition.second - 1)
+            Action.Direction.DOWN -> Point(playerPosition.first, playerPosition.second + 1)
+            Action.Direction.LEFT -> Point(playerPosition.first - 1, playerPosition.second)
+            Action.Direction.RIGHT -> Point(playerPosition.first + 1, playerPosition.second)
+        }
+
+        addWall(player, playerPosition, cellB);
+    }
+
+    fun countDomain(player: Player, opponent: Player): Int {
+        // Use flood fill to count the domain, terminate when reach the opponent's sovereign
+        val visited = mutableSetOf<Cell>()
+        val queue = LinkedList<Cell>()
+        val start = player.sovereign.on
+
+        visited.add(start)
+        queue.add(start)
+
+        while (queue.isNotEmpty()) {
+            val current = queue.poll()
+
+            if (current == opponent.sovereign.on) {
+                return -1
+            }
+
+            for (neighbor in getNeighbor(current)) {
+                if (neighbor in visited || !current.canGo(neighbor, false)) {
+                    continue
+                }
+
+                visited.add(neighbor)
+                queue.add(neighbor)
+            }
+        }
+
+        return visited.size
     }
 
     private fun getCell(x: Int, y: Int): Cell {
@@ -71,16 +107,9 @@ class Board {
         if (cellA.x < cellB.x) {
             cellA.canRight = false;
             cellB.canLeft = false;
-        } else if (cellA.x > cellB.x) {
-            cellA.canLeft = false;
-            cellB.canRight = false;
         } else if (cellA.y < cellB.y) {
             cellA.canDown = false;
             cellB.canUp = false;
-            vertical = false
-        } else if (cellA.y > cellB.y) {
-            cellA.canUp = false;
-            cellB.canDown = false;
             vertical = false
         }
 
@@ -89,51 +118,55 @@ class Board {
     }
 
     private fun findPath(from: Point, to: Point): List<Cell> {
-        val start = getCell(from);
-        val end = getCell(to);
+        val start = getCell(from)
+        val end = getCell(to)
 
         if (start.distance(end) > Constant.MAX_DISTANCE) {
-            return emptyList();
+            return emptyList()
         }
 
         // Use BFS to search for the path, with depth limit of MAX_DISTANCE
-        val queue = LinkedList<Cell>();
-        val visited = mutableSetOf<Cell>();
-        val parent = mutableMapOf<Cell, Cell>();
+        val queue = LinkedList<Pair<Cell, Int>>()
+        val visited = mutableSetOf<Cell>()
+        val parent = mutableMapOf<Cell, Cell>()
 
-        visited.add(start);
-        queue.add(start);
+        visited.add(start)
+        queue.add(Pair(start, 0))
 
         while (queue.isNotEmpty()) {
-            val current = queue.poll();
+            val (current, depth) = queue.poll()
 
             if (current == end) {
-                break;
+                break
+            }
+
+            if (depth > Constant.MAX_DISTANCE) {
+                continue
             }
 
             for (neighbor in getNeighbor(current)) {
                 if (neighbor in visited || !current.canGo(neighbor)) {
-                    continue;
+                    continue
                 }
 
-                visited.add(neighbor);
-                parent[neighbor] = current;
-                queue.add(neighbor);
+                visited.add(neighbor)
+                parent[neighbor] = current
+                queue.add(Pair(neighbor, depth + 1))
             }
         }
 
         if (end !in visited) {
-            return emptyList();
+            return emptyList()
         }
 
-        val path = mutableListOf<Cell>();
-        var current: Cell? = end;
+        val path = mutableListOf<Cell>()
+        var current: Cell? = end
         while (current != null) {
-            path.add(current);
-            current = parent[current];
+            path.add(current)
+            current = parent[current]
         }
-        path.reverse();
-        return path;
+        path.reverse()
+        return path
     }
 
     private fun getNeighbor(cell: Cell): List<Cell> {
