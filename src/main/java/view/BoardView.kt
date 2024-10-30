@@ -8,12 +8,16 @@ import domainExpansion.Constant
 
 class BoardView(private val board: Board, private val graphics: GraphicEntityModule) {
     private val grid = graphics.createGroup()
-    private val group: Group = graphics.createGroup(grid)
+    private val players = graphics.createGroup()
+    private val walls = graphics.createGroup()
+    private val group: Group = graphics.createGroup(players, grid, walls)
 
     init {
         board.setView(this);
 
         group.setX(Constant.LEFT_PAD).setY(Constant.TOP_PAD);
+        grid.zIndex = -1
+        players.zIndex = 2
 
         drawBackground();
         drawGrid();
@@ -37,7 +41,7 @@ class BoardView(private val board: Board, private val graphics: GraphicEntityMod
                 .setY2(y * Constant.CELL_SIZE)
                 .setLineColor(0x000000)
                 .setLineWidth(5.0)
-                .setZIndex(-1);
+
             grid.add(vertical);
         }
 
@@ -49,16 +53,36 @@ class BoardView(private val board: Board, private val graphics: GraphicEntityMod
                 .setY2(Constant.HEIGHT * Constant.CELL_SIZE)
                 .setLineColor(0x000000)
                 .setLineWidth(5.0)
-                .setZIndex(-1);
+
             grid.add(horizontal);
         }
     }
 
     fun addPlayer(player: Player) {
-        group.add(SovereignView(player.sovereign, graphics, player.colorToken).group)
+        players.add(SovereignView(player.sovereign, graphics, player.colorToken).group)
     }
 
-    fun addWall(cellA: Cell, cellB: Cell) {
-        // TODO
+    fun addWall(cell: Cell, vertical: Boolean, colorToken: Int) {
+        if (vertical) {
+            val wall: Line = graphics.createLine()
+                .setX(cell.x * Constant.CELL_SIZE)
+                .setY(cell.y * Constant.CELL_SIZE)
+                .setX2(cell.x * Constant.CELL_SIZE)
+                .setY2((cell.y + 1) * Constant.CELL_SIZE)
+                .setLineColor(colorToken)
+                .setLineWidth(12.0)
+
+            walls.add(wall);
+        } else {
+            val wall: Line = graphics.createLine()
+                .setX(cell.x * Constant.CELL_SIZE)
+                .setY(cell.y * Constant.CELL_SIZE)
+                .setX2((cell.x + 1) * Constant.CELL_SIZE)
+                .setY2(cell.y * Constant.CELL_SIZE)
+                .setLineColor(colorToken)
+                .setLineWidth(12.0)
+
+            walls.add(wall);
+        }
     }
 }

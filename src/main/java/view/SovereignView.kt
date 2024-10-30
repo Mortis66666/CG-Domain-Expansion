@@ -13,7 +13,6 @@ class SovereignView(
 
     init {
         sovereign.setView(this)
-        group = graphics.createGroup()
 
         circle = graphics.createCircle()
             .setX(sovereign.on.x * Constant.CELL_SIZE + Constant.CELL_SIZE / 2)
@@ -22,7 +21,7 @@ class SovereignView(
             .setFillColor(colorToken)
             .setLineWidth(0.0)
 
-        group.add(circle)
+        group = graphics.createGroup(circle)
     }
 
     fun move(x: Int, y: Int, progress: Double) {

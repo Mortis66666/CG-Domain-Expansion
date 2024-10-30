@@ -36,6 +36,10 @@ class Cell(val x: Int, val y: Int) {
             return false
         }
 
+        if (other.isOccupied()) {
+            return false
+        }
+
         if (other.x < x) {
             return canLeft && other.canRight
         }
@@ -58,5 +62,9 @@ class Cell(val x: Int, val y: Int) {
 
     fun equals(other: Cell): Boolean {
         return x == other.x && y == other.y
+    }
+
+    override fun toString(): String {
+        return "$x $y"
     }
 }

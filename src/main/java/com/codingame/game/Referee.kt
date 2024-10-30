@@ -37,10 +37,10 @@ class Referee : AbstractReferee() {
         player.execute()
 
         try {
-            val outputs = player.outputs
-            // Check validity of the player output and compute the new game state
+            val action = player.action
+            board.doAction(player, action)
 
-            board.movePlayer(player, Point(0, 3))
+            System.err.println("Player ${player.index} moved to ${action.x}, ${action.y}, placing wall ${action.direction}");
         } catch (e: AbstractPlayer.TimeoutException) {
             player.deactivate(String.format("$%d timeout!", player.index))
         }
