@@ -8,6 +8,8 @@ public class Agent1 {
         Scanner in = new Scanner(System.in);
         Random random = new Random();
 
+        int width = in.nextInt(), height = in.nextInt();
+
         while (true) {
             int startX = in.nextInt();
             int startY = in.nextInt();

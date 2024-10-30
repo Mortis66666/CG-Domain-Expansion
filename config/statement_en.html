@@ -1,5 +1,12 @@
 <div id="statement_back" class="statement_back" style="display:none"></div>
 <div class="statement-body">
+  <div class="statement-rules-content">
+    <b>WIP</b>
+    <p>
+      The source code of this game is available <a target="_blank" href="https://github.com/Mortis66666/CG-Domain-Expansion">on this GitHub repository</a>.
+    </p>
+  </div>
+  <br />
   <!-- GOAL -->
   <div class="statement-section statement-goal">
     <h1>
@@ -7,10 +14,7 @@
       <span>The Goal</span>
     </h1>
     <div class="statement-goal-content">
-      The aim of this game is to win.
-      <br>
-      <br>
-      For this question, you will be asked to output a single line as a solution.
+      The aim of this game is to expand your domain, the one with the larger domain wins.
     </div>
   </div>
   <!-- RULES -->
@@ -20,23 +24,24 @@
       <span>Rules</span>
     </h1>
     <div>
-      <div class="statement-rules-content">Your program receives characters.<br>
-        Your actions have an effect.<br>
-        <br>
-        The game zone works as follows:
-        <ul>
-          <li>There are coordinates.</li>
-        </ul>
-        <br>
-        The units work as follows:
-        <ul>
-          <li>They move around.</li>
-        </ul>
-        You <strong>lose</strong> if:
-        <ul>
-          <li>You mess up.</li>
-          <li>You do not supply a valid sequence of actions.</li>
-        </ul>
+      <div class="statement-rules-content">
+        The game happens in a <const>7</const>x<const>7</const> board. Each player will control a sovereign.
+        <br><br>
+        <h3> Movements </h3>
+        During a player's turn, the player can get to move their sovereign <const>0</const> to <const>3</const> steps, with each step being a move to a direction either <const>U</const>p, <const>D</const>own, <const>L</const>eft or <const>R</const>ight. A sovereign cannot walk through a wall, to a cell with another sovereign, or outside the map.
+
+        <br><br>
+
+        <h3> Wall building </h3>
+        After each move, the player must build a wall around their sovereign, which can either be at <const>U</const>p, <const>D</const>own, <const>L</const>eft or <const>R</const>ight to the sovereign. After a wall is built, neither of both parties will be able to walk through it. A wall cannot be built on another wall, see "Expert Rules" section to see what will happen if you attempted to do it.
+
+        <br><br>
+
+        <h3> Win condition </h3>
+        A game is over if the walls on the map splits both players to two completely separated areas, meaning that one player can never reach to the other player. Note that the rule with player blocking a cell by standing on it does not count in this condition.
+
+        The player with the most accessible cells wins.
+        
       </div>
     </div>
   </div>
@@ -47,7 +52,10 @@
       <span>Expert Rules</span>
     </h1>
     <div class="statement-expert-rules-content">
-      If you're going to run local simulations, you'll need to know this!
+      If you attempt to reach a cell exceeding the <const>3</const>-steps limit, you will move <const>0</const> steps instead.
+      <br><br>
+      If you attempt to build a wall on another existing wall, your wall build direction will be rotated clockwise until there's an empty space.
+
     </div>
   </div>
   <!-- EXAMPLES -->
@@ -68,15 +76,7 @@
       <span class="icon icon-warning">&nbsp;</span>
       <span>Note</span>
     </h1>
-    <div class="statement-warning-content">
-      <b>Don’t forget to run the tests by launching them from the “Test cases” window</b>. You can submit at any time
-      to recieve a score against the training validators. <b>You can submit as many times as you like</b>. Your most
-      recent submission will be used for the final ranking.<br>
-      <br>
-      <strong>Warning:</strong> the validation tests used to compute the final score are not the same as the ones used
-      during the event.
-      Harcoded solutions will not score highly.<br>
-      <br>
+    <div class="statement-warning-content">      
       Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
         height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
     </div>
@@ -89,15 +89,21 @@
     </h1>
     <!-- Protocol block -->
     <div class="blk">
-      <div class="text">The program must first read the initialization data from standard input. Then, provide to the
-        standard output one line with ...</div>
+      <div class="title">Initial input</div>
+      <div class="text">
+        <p><span class="statement-lineno">Line 1:</span>  <var>width</var> <var>height</var>, the size of the board</p>
+      </div>
     </div>
 
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1: </span>one string <var>...</var>, the ...</p>
+        <p><span class="statement-lineno">Line 1: </span><var>x</var> <var>y</var>, your position</p>
+        <p><span class="statement-lineno">Line 2: </span><var>opponentX</var> <var>opponentY</var>, opponent's position</p>
+        <p><span class="statement-lineno">Line 3: </span><var>numWalls</var>, number of walls</p>
+        <p><span class="statement-lineno">Next <var>numWalls</var> lines: </span><var>ax</var> <var>ay</var> <var>bx</var> <var>by</var>, position of two cells, <var>a</var> and <var>b</var>, denoting a wall between both cells, <var>a</var> is always either on top or on the left of <var>b</var></p>
+        Walls are given in <b>chronological</b> order
       </div>
     </div>
 
@@ -105,7 +111,7 @@
     <div class="blk">
       <div class="title">Output</div>
       <div class="text">
-        <span class="statement-lineno">A single line</span> containing ...
+        <span class="statement-lineno">A single line</span> <action>x y direction message</action>, <var>x</var> and <var>y</var> denotes the cell you wish to go to, <var>direction</var> denotes the direction you wish to build your wall after moving to <var>x</var> <var>y</var>, <var>message</var> to print a message, optional.
         <br>
       </div>
     </div>
@@ -113,20 +119,7 @@
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Constraints</div>
-      <div class="text"><var>...</var> contains between 1 and 500 characters.<br>
-        <br>Allotted response time to output
-        is ≤ <const>2</const> seconds.</div>
-    </div>
-  </div>
-  <!-- STORY -->
-  <div class="statement-story-background">
-    <div class="statement-story-cover" style="background-size: cover; background-image: url(https://www.codingame.com/servlet/fileservlet?id=2210505809934)">
-      <div class="statement-story">
-        <h1>Title</h1>
-        <div class="story-text">Story
-          <br>
-          Totally optional</div>
-      </div>
+
     </div>
   </div>
 </div>

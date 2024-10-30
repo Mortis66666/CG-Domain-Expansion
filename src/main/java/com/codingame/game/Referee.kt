@@ -45,6 +45,10 @@ class Referee : AbstractReferee() {
         val player = gameManager!!.getPlayer(1 - (turn % 2))
         val opponent = gameManager.getPlayer(turn % 2)
 
+        if (turn <= 2) {
+            player.sendInputLine(Constant.WIDTH.toString() + " " + Constant.HEIGHT)
+        }
+
         player.sendInputLine(player.sovereign.toString())
         player.sendInputLine(opponent.sovereign.toString())
 

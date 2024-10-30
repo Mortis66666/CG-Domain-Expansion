@@ -7,6 +7,8 @@ public class Agent2 {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        int width = in.nextInt(), height = in.nextInt();
+
         while (true) {
             int startX = in.nextInt();
             int startY = in.nextInt();
