@@ -6,12 +6,14 @@ import domainExpansion.Action
 import domainExpansion.Action.Direction
 import domainExpansion.InvalidAction
 import domainExpansion.Sovereign
+import view.PlayerView
 
 // Uncomment the line below and comment the line under it to create a Solo Game
 // class Player : AbstractSoloPlayer() {
 class Player : AbstractMultiplayerPlayer() {
     lateinit var sovereign: Sovereign
-    var message: Text? = null
+    lateinit var view: PlayerView
+    lateinit var message: Text
 
     override fun getExpectedOutputLines(): Int = 1
 

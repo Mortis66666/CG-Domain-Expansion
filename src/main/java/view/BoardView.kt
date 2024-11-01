@@ -60,6 +60,7 @@ class BoardView(private val board: Board, private val graphics: GraphicEntityMod
 
     fun addPlayer(player: Player) {
         players.add(SovereignView(player.sovereign, graphics, player.colorToken).group)
+        PlayerView(player, graphics)
     }
 
     fun addWall(cell: Cell, vertical: Boolean, colorToken: Int) {

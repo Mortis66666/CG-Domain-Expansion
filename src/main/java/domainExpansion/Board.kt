@@ -40,6 +40,8 @@ class Board {
         }
 
         addWall(player, playerPosition, cellB);
+
+//        player.view.updateMessage((player.message ?: "") as String)
     }
 
     fun countDomain(player: Player, opponent: Player): Int {
