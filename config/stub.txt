@@ -4,5 +4,10 @@ read x:int y:int
 read opponentX:int opponentY:int
 read numWalls:int
 loop numWalls read ax:int ay:int bx:int by:int
+write 0 0 U
+
 STATEMENT
 Expand your domain
+
+OUTPUT
+x y direction message
