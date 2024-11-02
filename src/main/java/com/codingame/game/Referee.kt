@@ -35,9 +35,9 @@ class Referee : AbstractReferee() {
         board.setup(gameManager.getPlayer(1), Point(Constant.WIDTH - 1, Constant.HEIGHT - 1))
 
         gameManager.apply {
-            firstTurnMaxTime = 1000
-            turnMaxTime = 1000
-            maxTurns = 350
+            firstTurnMaxTime = Constant.FIRST_TURN_MAX_TIME
+            turnMaxTime = Constant.TURN_MAX_TIME
+            maxTurns = Constant.MAX_TURNS
         }
     }
 
