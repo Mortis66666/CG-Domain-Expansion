@@ -25,26 +25,56 @@
     </h1>
     <div>
       <div class="statement-rules-content">
-        The game happens in a <const>7</const>x<const>7</const> board. Each player will control a sovereign.
+        The game is played on a <const>7</const>x<const>7</const> board, where each cell is identified by coordinates ranging from (<const>0</const>, <const>0</const>) in the top-left corner to (<const>6</const>, <const>6</const>) in the bottom-right. Each player will control a token.
         <br><br>
         <h3> Movements </h3>
-        During a player's turn, the player can get to move their sovereign <const>0</const> to <const>3</const> steps, with each step being a move to a direction either <const>U</const>p, <const>D</const>own, <const>L</const>eft or <const>R</const>ight. A sovereign cannot walk through a wall, to a cell with another sovereign, or outside the map.
+        During a player's turn, the player may either keep their token in its current location, or move it to another cell up to 3 steps away (measured in Manhattan distance). There must be an unobstructed path (not blocked by any wall or the other player's token) to be able to move to the new location. A token cannot be moved outside the board, or to a cell occupied by the other player's token.
 
         <br><br>
 
         <h3> Wall building </h3>
-        After each move, the player must build a wall around their sovereign, which can either be at <const>U</const>p, <const>D</const>own, <const>L</const>eft or <const>R</const>ight to the sovereign. After a wall is built, neither of both parties will be able to walk through it. A wall cannot be built on another wall, see "Expert Rules" section to see what will happen if you attempted to do it.
+        After completing their move – or choosing not to move – the player must build a wall on any side of their token: <const>U</const>p, <const>D</const>own, <const>L</const>eft, or <const>R</const>ight. After a wall is built, neither player's token will be able to walk through it. A wall cannot be built on an existing wall, see "Expert Rules" section to learn what happens if you attempt to do so.
 
         <br><br>
 
-        <h3> Win condition </h3>
-        A game is over if the walls on the map splits both players to two completely separated areas, meaning that one player can never reach to the other player. Note that the rule with player blocking a cell by standing on it does not count in this condition.
-
-        The player with the most accessible cells wins.
-        
+        <h3> Game over condition </h3>
+        A game is over if the walls on the board splits both players to two completely separated domains, meaning that neither player can reach the cell occupied by the other player.        
       </div>
     </div>
   </div>
+
+  <!-- Victory conditions -->
+  <div class="statement-victory-conditions">
+      <div class="icon victory"></div>
+      <div class="blk">
+          <div class="title">Victory Condition</div>
+          <div class="text">
+              You have a larger domain (more accessible cells) than your opponent.
+          </div>
+      </div>
+  </div>
+  
+  <!-- Lose conditions -->
+  <div class="statement-lose-conditions">
+      <div class="icon lose"></div>
+      <div class="blk">
+          <div class="title">Defeat Condition</div>
+          <ul>
+            <li>
+              <div class="text">
+                      Your program does not provide a command in the allotted time or it provides an
+                      unrecognized command.
+              </div>
+            </li>
+            <li>
+              <div class="text">
+                You have smaller domain (fewer accessible cells) than your opponent.
+              </div>
+          </ul>
+      </div>
+  </div>
+
+  <br><br><br>
   <!-- EXPERT RULES -->
   <div class="statement-section statement-expertrules">
     <h1>
@@ -54,12 +84,12 @@
     <div class="statement-expert-rules-content">
       If you attempt to reach a cell exceeding the <const>3</const>-steps limit, you will move <const>0</const> steps instead.
       <br><br>
-      If you attempt to build a wall on another existing wall, your wall build direction will be rotated clockwise until there's an empty space.
+      If you attempt to build a wall on an existing wall, your wall building direction will be rotated clockwise until an available side is found.
 
     </div>
   </div>
   <!-- EXAMPLES -->
-  <div class="statement-section statement-examples">
+  <!-- <div class="statement-section statement-examples">
     <h1>
       <span class="icon icon-example">&nbsp;</span>
       <span>Example</span>
@@ -69,9 +99,9 @@
       A basic situation, an instruction, a result.
     </div>
 
-  </div>
+  </div> -->
   <!-- WARNING -->
-  <div class="statement-section statement-warning">
+  <!-- <div class="statement-section statement-warning">
     <h1>
       <span class="icon icon-warning">&nbsp;</span>
       <span>Note</span>
@@ -80,7 +110,7 @@
       Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
         height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
     </div>
-  </div>
+  </div> -->
   <!-- PROTOCOL -->
   <div class="statement-section statement-protocol">
     <h1>
@@ -91,7 +121,7 @@
     <div class="blk">
       <div class="title">Initial input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1:</span>  <var>width</var> <var>height</var>, the size of the board</p>
+        <p><span class="statement-lineno">Line 1:</span>  2 space-separated integers <var>width</var> <var>height</var>, the size of the board</p>
       </div>
     </div>
 
@@ -99,10 +129,10 @@
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1: </span><var>x</var> <var>y</var>, your position</p>
-        <p><span class="statement-lineno">Line 2: </span><var>opponentX</var> <var>opponentY</var>, opponent's position</p>
-        <p><span class="statement-lineno">Line 3: </span><var>numWalls</var>, number of walls</p>
-        <p><span class="statement-lineno">Next <var>numWalls</var> lines: </span><var>ax</var> <var>ay</var> <var>bx</var> <var>by</var>, position of two cells, <var>a</var> and <var>b</var>, denoting a wall between both cells, <var>a</var> is always either on top or on the left of <var>b</var></p>
+        <p><span class="statement-lineno">Line 1:</span> 2 space-separated integers <var>x</var> <var>y</var>, the position of your token</p>
+        <p><span class="statement-lineno">Line 2: </span>2 space-separated integers <var>opponentX</var> <var>opponentY</var>, the position of your opponent's token</p>
+        <p><span class="statement-lineno">Line 3: </span>An integer <var>numWalls</var>, number of walls</p>
+        <p><span class="statement-lineno">Next <var>numWalls</var> lines: </span>4 space-separated integers <var>ax</var> <var>ay</var> <var>bx</var> <var>by</var>, position of two cells, <var>a</var> and <var>b</var>, denoting a wall between the cells, <var>a</var> is always either above or to the left of <var>b</var></p>
         Walls are given in <b>chronological</b> order
       </div>
     </div>
@@ -111,7 +141,7 @@
     <div class="blk">
       <div class="title">Output</div>
       <div class="text">
-        <span class="statement-lineno">A single line</span> <action>x y direction message</action>, <var>x</var> and <var>y</var> denotes the cell you wish to go to, <var>direction</var> denotes the direction you wish to build your wall after moving to <var>x</var> <var>y</var>, <var>message</var> to print a message, optional.
+        <span class="statement-lineno">A single line</span> <action>x y direction message</action>, <var>x</var> and <var>y</var> denotes the position of the cell you wish to move your token to (or its current position if not moving), <var>direction</var> denotes the direction you wish to build your wall, <var>message</var> to print a message, optional.
         <br>
         <var>direction</var> is denoted by <const>U</const>, <const>D</const>, <const>L</const> or <const>R</const>
       </div>
@@ -120,8 +150,8 @@
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Constraints</div>
-      <div class="text">Response time for first turn ≤ 1000ms <br>
-        Response time for one turn ≤ 100ms</div>
+      <div class="text">Response time for first turn ≤ <const>1000</const>ms <br>
+        Response time for one turn ≤ <const>100</const>ms</div>
     </div>
   </div>
 </div>
