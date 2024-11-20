@@ -10,7 +10,7 @@ class Cell(val x: Int, val y: Int) {
     var canRight = true
     var canUp = true
     var canDown = true
-
+    
     private fun isOccupied(): Boolean {
         return entity != null
     }

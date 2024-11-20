@@ -22,6 +22,18 @@ class Board {
         view.addPlayer(player);
     }
 
+    fun setupWalls() {
+        for (int in 0 until Constant.HEIGHT) {
+            addWall(0xFFFFFF, Point(-1, int), Point(0, int))
+            addWall(0xFFFFFF, Point(Constant.WIDTH - 1, int), Point(Constant.WIDTH, int))
+        }
+
+        for (int in 0 until Constant.WIDTH) {
+            addWall(0xFFFFFF, Point(int, -1), Point(int, 0))
+            addWall(0xFFFFFF, Point(int, Constant.HEIGHT - 1), Point(int, Constant.HEIGHT))
+        }
+    }
+
     fun doAction(player: Player, action: Action) {
         movePlayer(player, action.point);
         val playerPosition = player.sovereign.on.point;
@@ -39,9 +51,7 @@ class Board {
             Action.Direction.RIGHT -> Point(playerPosition.first + 1, playerPosition.second)
         }
 
-        addWall(player, playerPosition, cellB);
-
-//        player.view.updateMessage((player.message ?: "") as String)
+        addWall(player.colorToken, playerPosition, cellB);
     }
 
     fun countDomain(player: Player, opponent: Player): Int {
@@ -91,7 +101,7 @@ class Board {
         player.sovereign.travel(path);
     }
 
-    private fun addWall(player: Player, a: Point, b: Point) {
+    private fun addWall(color: Int, a: Point, b: Point) {
         var cellA = getCell(a);
         var cellB = getCell(b);
 
@@ -116,7 +126,7 @@ class Board {
         }
 
         walls.add(Wall(cellA, cellB));
-        view.addWall(cellB, vertical, player.colorToken);
+        view.addWall(cellB, vertical, color);
     }
 
     private fun findPath(from: Point, to: Point): List<Cell> {
