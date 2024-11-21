@@ -69,6 +69,15 @@ class Cell(val x: Int, val y: Int) {
         }
     }
 
+    fun getEmptyDirections(): List<Action.Direction> {
+        val directions = mutableListOf<Action.Direction>()
+        if (canUp) directions.add(Action.Direction.UP)
+        if (canDown) directions.add(Action.Direction.DOWN)
+        if (canLeft) directions.add(Action.Direction.LEFT)
+        if (canRight) directions.add(Action.Direction.RIGHT)
+        return directions
+    }
+
     fun equals(other: Cell): Boolean {
         return x == other.x && y == other.y
     }

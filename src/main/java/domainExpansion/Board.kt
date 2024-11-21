@@ -54,6 +54,41 @@ class Board {
         addWall(player.colorToken, playerPosition, cellB);
     }
 
+    fun generateValidMoves(player: Player) {
+        val playerPosition = player.sovereign.on.point;
+        val validMoves = mutableListOf<Action>();
+
+        // Use BFS to search for all possible moves within MAX_DISTANCE
+        val queue = LinkedList<Pair<Cell, Int>>()
+        val visited = mutableSetOf<Cell>()
+
+        visited.add(player.sovereign.on)
+        queue.add(Pair(player.sovereign.on, 0))
+
+        while (queue.isNotEmpty()) {
+            val (current, depth) = queue.poll()
+
+            if (depth > Constant.MAX_DISTANCE) {
+                continue
+            }
+
+            for (neighbor in getNeighbor(current)) {
+                if (neighbor in visited || !current.canGo(neighbor)) {
+                    continue
+                }
+
+                visited.add(neighbor)
+                queue.add(Pair(neighbor, depth + 1))
+            }
+        }
+
+        for (cell in visited) {
+            for (direction in cell.getEmptyDirections()) {
+                validMoves.add(Action(cell.x, cell.y, direction))
+            }
+        }
+    }
+
     fun countDomain(player: Player, opponent: Player): Int {
         // Use flood fill to count the domain, terminate when reach the opponent's sovereign
         val visited = mutableSetOf<Cell>()
