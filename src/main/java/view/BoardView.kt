@@ -21,13 +21,14 @@ class BoardView(private val board: Board, private val graphics: GraphicEntityMod
 
         drawBackground();
         drawGrid();
+        drawIndex();
     }
 
     private fun drawBackground() {
         graphics
             .createRectangle()
-            .setWidth(1920)
-            .setHeight(1080)
+            .setWidth(Constant.SCREEN_WIDTH)
+            .setHeight(Constant.SCREEN_HEIGHT)
             .setFillColor(0x7e7e81)
             .setZIndex(-5);
     }
@@ -55,6 +56,30 @@ class BoardView(private val board: Board, private val graphics: GraphicEntityMod
                 .setLineWidth(5.0)
 
             grid.add(horizontal);
+        }
+    }
+
+    private fun drawIndex() {
+        for (y in 0 until Constant.HEIGHT) {
+            val text: Text = graphics.createText()
+                .setText(y.toString())
+                .setX(-Constant.TOP_PAD)
+                .setY(((y + .5) * Constant.CELL_SIZE).toInt())
+                .setFontSize(Constant.TOP_PAD)
+                .setFillColor(0x000000)
+
+            grid.add(text);
+        }
+
+        for (x in 0 until Constant.WIDTH) {
+            val text: Text = graphics.createText()
+                .setText(x.toString())
+                .setX(((x + .5) * Constant.CELL_SIZE).toInt())
+                .setY(-Constant.TOP_PAD)
+                .setFontSize(Constant.TOP_PAD)
+                .setFillColor(0x000000)
+
+            grid.add(text);
         }
     }
 
