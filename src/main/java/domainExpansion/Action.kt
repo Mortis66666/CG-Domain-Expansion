@@ -16,7 +16,7 @@ class Action(var x: Int, var y: Int, var direction: Direction) {
     }
 
     override fun toString(): String {
-        return "$x $y ${direction.name}"
+        return "$x $y ${direction.name[0]}"
     }
 
     fun equals(action: Action): Boolean {

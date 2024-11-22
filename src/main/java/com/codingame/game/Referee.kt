@@ -6,6 +6,7 @@ import com.codingame.gameengine.core.MultiplayerGameManager
 import com.codingame.gameengine.module.entities.GraphicEntityModule
 import com.codingame.gameengine.module.endscreen.EndScreenModule
 import com.google.inject.Inject
+import domainExpansion.Action
 import domainExpansion.Board
 import domainExpansion.Constant
 import domainExpansion.InvalidAction
@@ -52,7 +53,6 @@ class Referee : AbstractReferee() {
 
         player.sendInputLine(player.sovereign.toString())
         player.sendInputLine(opponent.sovereign.toString())
-
         player.sendInputLine(board.walls.size.toString())
         for (wall in board.walls) {
             player.sendInputLine(wall.toString())
@@ -62,7 +62,14 @@ class Referee : AbstractReferee() {
 
         try {
             val action = player.action
-            board.doAction(player, action)
+
+            val legal = board.doAction(player, action)
+
+            if (!legal) {
+                player.score = -5
+                player.deactivate("Illegal move!")
+                gameManager.endGame()
+            }
 
             System.err.println("Player ${player.index} moved to ${action.x}, ${action.y}, placing wall ${action.direction}");
 
@@ -103,6 +110,9 @@ class Referee : AbstractReferee() {
                 continue
             } else if (scores[i] == -6) {
                 texts[i] = "Invalid action!"
+                continue
+            } else if (scores[i] == -5) {
+                texts[i] = "Illegal move!"
                 continue
             }
             texts[i] = "Conquered ${scores[i]} cells."

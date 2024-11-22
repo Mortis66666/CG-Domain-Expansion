@@ -34,59 +34,30 @@ class Board {
         }
     }
 
-    fun doAction(player: Player, action: Action) {
-        movePlayer(player, action.point);
-        val playerPosition = player.sovereign.on.point;
+    fun doAction(player: Player, action: Action): Boolean {
+        // Returns false if the action is invalid
+        val canReach = movePlayer(player, action.point); // Move the player, if unreachable, return false
 
-        var wallDirection = action.direction;
-
-        while (player.sovereign.on.hasWall(wallDirection)) {
-            wallDirection = wallDirection.next();
+        if (!canReach) {
+            return false;
         }
 
-        val cellB = when (wallDirection) {
+        val playerCell = player.sovereign.on;
+        val playerPosition = playerCell.point;
+
+        if (playerCell.hasWall(action.direction)) {
+            return false; // Wall already exists
+        }
+
+        val cellB = when (action.direction) {
             Action.Direction.UP -> Point(playerPosition.first, playerPosition.second - 1)
             Action.Direction.DOWN -> Point(playerPosition.first, playerPosition.second + 1)
             Action.Direction.LEFT -> Point(playerPosition.first - 1, playerPosition.second)
             Action.Direction.RIGHT -> Point(playerPosition.first + 1, playerPosition.second)
         }
-
         addWall(player.colorToken, playerPosition, cellB);
-    }
 
-    fun generateValidMoves(player: Player) {
-        val playerPosition = player.sovereign.on.point;
-        val validMoves = mutableListOf<Action>();
-
-        // Use BFS to search for all possible moves within MAX_DISTANCE
-        val queue = LinkedList<Pair<Cell, Int>>()
-        val visited = mutableSetOf<Cell>()
-
-        visited.add(player.sovereign.on)
-        queue.add(Pair(player.sovereign.on, 0))
-
-        while (queue.isNotEmpty()) {
-            val (current, depth) = queue.poll()
-
-            if (depth > Constant.MAX_DISTANCE) {
-                continue
-            }
-
-            for (neighbor in getNeighbor(current)) {
-                if (neighbor in visited || !current.canGo(neighbor)) {
-                    continue
-                }
-
-                visited.add(neighbor)
-                queue.add(Pair(neighbor, depth + 1))
-            }
-        }
-
-        for (cell in visited) {
-            for (direction in cell.getEmptyDirections()) {
-                validMoves.add(Action(cell.x, cell.y, direction))
-            }
-        }
+        return true;
     }
 
     fun countDomain(player: Player, opponent: Player): Int {
@@ -130,10 +101,14 @@ class Board {
         return getCell(p.first, p.second);
     }
 
-    private fun movePlayer(player: Player, position: Point) {
-        val path = findPath(player.sovereign.on.point, position);
-
-        player.sovereign.travel(path);
+    private fun movePlayer(player: Player, position: Point): Boolean {
+        return try {
+            val path = findPath(player.sovereign.on.point, position);
+            player.sovereign.travel(path);
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun addWall(color: Int, a: Point, b: Point) {
@@ -169,7 +144,7 @@ class Board {
         val end = getCell(to)
 
         if (start.distance(end) > Constant.MAX_DISTANCE) {
-            return emptyList()
+            throw Exception()
         }
 
         // Use BFS to search for the path, with depth limit of MAX_DISTANCE
@@ -203,7 +178,7 @@ class Board {
         }
 
         if (end !in visited) {
-            return emptyList()
+            throw Exception()
         }
 
         val path = mutableListOf<Cell>()
