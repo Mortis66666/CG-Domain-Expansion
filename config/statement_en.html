@@ -33,7 +33,9 @@
         <br><br>
 
         <h3> Wall building </h3>
-        After completing their move – or choosing not to move – the player must build a wall on any side of their token: <const>U</const>p, <const>D</const>own, <const>L</const>eft, or <const>R</const>ight. After a wall is built, neither player's token will be able to walk through it. A wall cannot be built on an existing wall, see "Expert Rules" section to learn what happens if you attempt to do so.
+        After completing their move – or choosing not to move – the player must build a wall on any side of their token: <const>U</const>p, <const>D</const>own, <const>L</const>eft, or <const>R</const>ight. After a wall is built, neither player's token will be able to walk through it. A wall cannot be built on an existing wall.
+        <br>
+        At the start of the game, the border of the board is automatically a wall, hence you are also not allowed to build on it.
 
         <br><br>
 
@@ -68,6 +70,11 @@
             </li>
             <li>
               <div class="text">
+                      Your program provided a command against the rules.
+              </div>
+            </li>
+            <li>
+              <div class="text">
                 You have smaller domain (fewer accessible cells) than your opponent.
               </div>
           </ul>
@@ -75,42 +82,6 @@
   </div>
 
   <br><br><br>
-  <!-- EXPERT RULES -->
-  <div class="statement-section statement-expertrules">
-    <h1>
-      <span class="icon icon-expertrules">&nbsp;</span>
-      <span>Expert Rules</span>
-    </h1>
-    <div class="statement-expert-rules-content">
-      If you attempt to reach a cell exceeding the <const>3</const>-steps limit, you will move <const>0</const> steps instead.
-      <br><br>
-      If you attempt to build a wall on an existing wall, your wall building direction will be rotated clockwise until an available side is found.
-
-    </div>
-  </div>
-  <!-- EXAMPLES -->
-  <!-- <div class="statement-section statement-examples">
-    <h1>
-      <span class="icon icon-example">&nbsp;</span>
-      <span>Example</span>
-    </h1>
-
-    <div class="statement-examples-text">
-      A basic situation, an instruction, a result.
-    </div>
-
-  </div> -->
-  <!-- WARNING -->
-  <!-- <div class="statement-section statement-warning">
-    <h1>
-      <span class="icon icon-warning">&nbsp;</span>
-      <span>Note</span>
-    </h1>
-    <div class="statement-warning-content">      
-      Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
-        height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
-    </div>
-  </div> -->
   <!-- PROTOCOL -->
   <div class="statement-section statement-protocol">
     <h1>
@@ -122,6 +93,8 @@
       <div class="title">Initial input</div>
       <div class="text">
         <p><span class="statement-lineno">Line 1:</span>  2 space-separated integers <var>width</var> <var>height</var>, the size of the board</p>
+        <p><span class="statement-lineno">Line 2:</span> 2 space-separated integers <var>x</var> <var>y</var>, the position of your token</p>
+        <p><span class="statement-lineno">Line 3: </span>2 space-separated integers <var>opponentX</var> <var>opponentY</var>, the position of your opponent's token</p>
       </div>
     </div>
 
@@ -129,11 +102,8 @@
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1:</span> 2 space-separated integers <var>x</var> <var>y</var>, the position of your token</p>
-        <p><span class="statement-lineno">Line 2: </span>2 space-separated integers <var>opponentX</var> <var>opponentY</var>, the position of your opponent's token</p>
-        <p><span class="statement-lineno">Line 3: </span>An integer <var>numWalls</var>, number of walls</p>
-        <p><span class="statement-lineno">Next <var>numWalls</var> lines: </span>4 space-separated integers <var>ax</var> <var>ay</var> <var>bx</var> <var>by</var>, position of two cells, <var>a</var> and <var>b</var>, denoting a wall between the cells, <var>a</var> is always either above or to the left of <var>b</var></p>
-        Walls are given in <b>chronological</b> order
+
+        <p><span class="statement-lineno">Line 1: </span>3 space-separated integers <var>actionX</var> <var>actionY</var> <var>actionDirection</var>, the opponent's last action (<const>-1</const> <const>-1</const> <const>_</const> for the first turn).
       </div>
     </div>
 
