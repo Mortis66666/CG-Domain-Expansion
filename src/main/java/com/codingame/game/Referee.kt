@@ -26,6 +26,8 @@ class Referee : AbstractReferee() {
 
     private lateinit var board: Board
 
+    private var lastAction = Action.empty()
+
     override fun init() {
         board = Board();
         if (graphicEntityModule != null) {
@@ -49,19 +51,16 @@ class Referee : AbstractReferee() {
 
         if (turn <= 2) {
             player.sendInputLine(Constant.WIDTH.toString() + " " + Constant.HEIGHT)
+            player.sendInputLine(player.sovereign.toString())
+            player.sendInputLine(opponent.sovereign.toString())
         }
 
-        player.sendInputLine(player.sovereign.toString())
-        player.sendInputLine(opponent.sovereign.toString())
-        player.sendInputLine(board.walls.size.toString())
-        for (wall in board.walls) {
-            player.sendInputLine(wall.toString())
-        }
-
+        player.sendInputLine(lastAction.toString())
         player.execute()
 
         try {
             val action = player.action
+            lastAction = action
 
             val legal = board.doAction(player, action)
 

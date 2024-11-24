@@ -6,7 +6,7 @@ import java.util.*
 
 class Board {
     private lateinit var view: BoardView;
-    val walls = mutableListOf<Wall>();
+    private val walls = mutableListOf<Wall>();
     private val grid = Array(Constant.HEIGHT) { y -> Array(Constant.WIDTH) { x -> Cell(x, y)} }
 
     init {
@@ -54,6 +54,7 @@ class Board {
             Action.Direction.DOWN -> Point(playerPosition.first, playerPosition.second + 1)
             Action.Direction.LEFT -> Point(playerPosition.first - 1, playerPosition.second)
             Action.Direction.RIGHT -> Point(playerPosition.first + 1, playerPosition.second)
+            else -> throw Exception("Error: invalid direction")
         }
         addWall(player.colorToken, playerPosition, cellB);
 

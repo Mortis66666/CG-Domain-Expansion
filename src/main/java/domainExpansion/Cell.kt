@@ -66,6 +66,7 @@ class Cell(val x: Int, val y: Int) {
             Action.Direction.DOWN -> !canDown
             Action.Direction.LEFT -> !canLeft
             Action.Direction.RIGHT -> !canRight
+            else -> false
         }
     }
 
