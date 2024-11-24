@@ -1,10 +1,9 @@
 read width:int height:int
-gameloop
 read x:int y:int
 read opponentX:int opponentY:int
-read numWalls:int
-loop numWalls read ax:int ay:int bx:int by:int
-write 0 0 U
+gameloop
+read actionX:int actionY:int actionDirection:word(1)
+write 0 0 R
 
 STATEMENT
 Expand your domain
